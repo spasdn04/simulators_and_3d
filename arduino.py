@@ -47,21 +47,21 @@ for i in range(numData):
 fig = plt.figure()
 # Agregar la 1ra gráfica dentro de la figura
 ax1 = fig.add_subplot(1, 2, 1, xlim = (xmin, xmax), ylim = (ymin[0], ymax[0]))
-ax1.title.set_text("Temperatura")
+ax1.title.set_text("Temperatura") # type: ignore
 ax1.set_xlabel("Número de muestras")
 ax1.set_ylabel("Valor(C°)")
 ax1.add_line(lines[0])
 
 # Agregar la 2da gráfica dentro de la figura
 ax2 = fig.add_subplot(1, 2, 2, xlim = (xmin, xmax), ylim = (ymin[1], ymax[1]))
-ax2.title.set_text("Humedad")
+ax2.title.set_text("Humedad") # type: ignore
 ax2.set_xlabel("Número de muestras")
 ax2.set_ylabel("Valor(%)")
 ax2.add_line(lines[1])
 
 # Animamos nuestra gráfica
-anim = animation.FuncAnimation(fig, getSerialData, fargs = (Samples, numData, serialConnection, lines), interval = sampleTime)
+anim = animation.FuncAnimation(fig, getSerialData, fargs = (Samples, numData, serialConnection, lines), interval = sampleTime) # type: ignore
 plt.show() # Mostramos la gráfica
 
 # Cerramos el puerto serial
-serialConnection.close()
+serialConnection.close() # type: ignore
