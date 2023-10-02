@@ -16,6 +16,7 @@ screen = pg.display.set_mode((WIDTH, HEIGHT))
 
 scale = 100
 circle_pos = [WIDTH / 2, HEIGHT / 2]
+circle_pos2 = [WIDTH / 4, HEIGHT / 2]
 
 angle = 0
 
@@ -37,6 +38,10 @@ projection_matrix = np.matrix([
 ])
 
 projected_points = [
+    [n, n] for n in range(len(points))
+]
+
+projected_points2 = [
     [n, n] for n in range(len(points))
 ]
 
@@ -82,7 +87,7 @@ while True:
         rotated2dzy = np.dot(rotate_y, rotated2dz)
         projected2d = np.dot(projection_matrix, rotated2dzy)
         
-        x = int(projected2d[0][0] * scale)+ circle_pos[0]
+        x = int(projected2d[0][0] * scale) + circle_pos[0]
         y = int(projected2d[1][0] * scale) + circle_pos[1]
         
         projected_points[i] = [x, y] # type: ignore
@@ -93,5 +98,23 @@ while True:
             connect_points(p, (p+1) % 4, projected_points)
             connect_points(p+4, ((p+1) % 4) +4, projected_points)
             connect_points(p, ((p+4)), projected_points)
+    
+    j = 0
+    for point in points:
+        rotated2dz = np.dot(-rotate_z, point.reshape(3, 1))
+        rotated2dzy = np.dot(rotate_y, rotated2dz)
+        projected2d = np.dot(projection_matrix, rotated2dzy) 
+            
+        x1 = int(projected2d[0][0] * scale * 0.1) + circle_pos2[0]
+        y1 = int(projected2d[1][0] * scale * 0.1) + circle_pos2[1]
+            
+        projected_points2[j] = [x1, y1] # type: ignore
+        pg.draw.circle(screen, RED, (x1, y1), 1)
+        j += 1
+            
+        for p in range(4):
+            connect_points(p, (p+1) % 4, projected_points2)
+            connect_points(p+4, ((p+1) % 4) +4, projected_points2)
+            connect_points(p, ((p+4)), projected_points2)
     
     pg.display.update()
